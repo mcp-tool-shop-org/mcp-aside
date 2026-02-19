@@ -1,0 +1,28 @@
+{
+  "name": "mcp-aside",
+  "version": "0.1.0",
+  "description": "MCP server that maintains an in-memory interjection inbox with guardrails (TTL, rate-limit, dedupe).",
+  "type": "module",
+  "license": "MIT",
+  "author": "mcp-tool-shop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcp-tool-shop-org/mcp-aside.git"
+  },
+  "bin": {
+    "mcp-aside": "./build/index.js"
+  },
+  "files": ["build", "README.md", "LICENSE", "logo.png"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "npm run build && node build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
