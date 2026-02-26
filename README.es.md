@@ -1,44 +1,49 @@
 <p align="center">
-  <a href="README.md">English</a> | <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <strong>Español</strong> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português</a>
+  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.md">English</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
 </p>
 
 <p align="center">
-  <img src="logo.png" alt="logo de mcp-aside" width="280" />
-</p>
-
-<h1 align="center">mcp-aside</h1>
-
-<p align="center">
-  Un servidor MCP que le da a tu IA un lugar para anotar cosas durante la conversación — sin descarrilar la tarea en curso.
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/mcp-aside/readme.png" alt="mcp-aside logo" width="400" />
 </p>
 
 <p align="center">
-  <a href="#inicio-rápido">Inicio Rápido</a> &middot;
-  <a href="#cómo-funciona">Cómo Funciona</a> &middot;
-  <a href="#herramientas">Herramientas</a> &middot;
-  <a href="#configuración">Configuración</a> &middot;
-  <a href="#licencia">Licencia</a>
+  <a href="https://github.com/mcp-tool-shop-org/mcp-aside/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/mcp-aside/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://www.npmjs.com/package/@mcptoolshop/mcp-aside"><img src="https://img.shields.io/npm/v/@mcptoolshop/mcp-aside" alt="npm version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
+  <a href="https://mcp-tool-shop-org.github.io/mcp-aside/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page"></a>
+</p>
+
+<p align="center">
+  An MCP server that gives your AI a place to jot things down mid-conversation — without derailing the task at hand.
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick Start</a> &middot;
+  <a href="#how-it-works">How It Works</a> &middot;
+  <a href="#tools">Tools</a> &middot;
+  <a href="#configuration">Configuration</a> &middot;
+  <a href="#license">License</a>
 </p>
 
 ---
 
-## Por qué
+## ¿Por qué?
 
-Los LLM pierden el hilo. Un pensamiento suelto, una preocupación a medio formar, un "deberíamos volver a esto" que nunca se retoma. **mcp-aside** le da al modelo una bandeja de entrada dedicada — con límite de tasa, deduplicación y expiración automática para que la bandeja no se convierta en un problema.
+Los LLM (Modelos de Lenguaje Grandes) pierden el hilo de las cosas. Un pensamiento aislado, una preocupación a medio formar, un "deberíamos volver a esto" que nunca se revisa. **mcp-aside** proporciona al modelo una bandeja de entrada dedicada para registrar estas notas — con límites de velocidad, eliminación de duplicados y caducidad automática, para que la bandeja de entrada no se convierta en un problema en sí misma.
 
-Piénsalo como un bloc de notas adhesivas junto a la conversación. El modelo escribe notas. Tú (o el modelo) las lees cuando sea oportuno.
+Piénsalo como un bloc de notas adhesivo al lado de la conversación. El modelo escribe notas. Tú (o el modelo) las lees cuando sea el momento adecuado.
 
-## Cómo Funciona
+## ¿Cómo funciona?
 
-1. El modelo llama a `aside.push` con un pensamiento etiquetado por prioridad.
-2. Las barreras de protección verifican duplicados, límites de tasa y topes de TTL.
-3. Si pasa, la interjección se almacena en una bandeja de entrada en memoria.
-4. Los clientes reciben notificación vía `notifications/resources/updated`.
-5. Cualquiera puede leer la bandeja a través del recurso `interject://inbox`.
+1. El modelo llama a `aside.push` con un pensamiento, etiquetado por prioridad.
+2. Los mecanismos de control verifican si hay duplicados, límites de velocidad y límites de tiempo de vida (TTL).
+3. Si pasa la verificación, la nota se guarda en una bandeja de entrada en memoria.
+4. Los clientes reciben una notificación a través de `notifications/resources/updated`.
+5. Cualquiera puede leer la bandeja de entrada a través del recurso `interject://inbox`.
 
-Sin base de datos. Sin persistencia. Si el servidor se detiene, la bandeja desaparece — por diseño.
+No hay base de datos. No hay persistencia. Si el servidor se detiene, la bandeja de entrada desaparece; esto es por diseño.
 
-## Inicio Rápido
+## Guía de inicio rápido
 
 ```bash
 npm install
@@ -46,7 +51,7 @@ npm run build
 node build/index.js
 ```
 
-El servidor usa MCP sobre **stdio**. Apunta cualquier cliente compatible con MCP hacia él:
+El servidor utiliza MCP a través de **stdio**. Dirige cualquier cliente compatible con MCP hacia él:
 
 ```json
 {
@@ -61,39 +66,39 @@ El servidor usa MCP sobre **stdio**. Apunta cualquier cliente compatible con MCP
 
 ## Herramientas
 
-| Herramienta | Qué hace |
-|---|---|
-| `aside.push` | Envía una interjección a la bandeja. Acepta `text`, `priority` (low/med/high), `reason`, `tags`, `expiresAt`, `source` y `meta`. |
-| `aside.configure` | Ajusta las barreras en tiempo de ejecución — topes de TTL, límites de tasa, ventanas de deduplicación, umbrales de notificación. |
-| `aside.clear` | Vacía la bandeja de entrada. |
-| `aside.status` | Instantánea de solo lectura del tamaño de la bandeja y la configuración actual de barreras. |
+| Herramienta | ¿Qué hace? |
+| --- | --- |
+| `aside.push` | Envía una nota a la bandeja de entrada. Acepta `text`, `priority` (bajo/medio/alto), `reason`, `tags`, `expiresAt`, `source` y `meta`. |
+| `aside.configure` | Ajusta los mecanismos de control en tiempo de ejecución: límites de tiempo de vida (TTL), límites de velocidad, ventanas de eliminación de duplicados, umbrales de notificación. |
+| `aside.clear` | Borra la bandeja de entrada. |
+| `aside.status` | Captura de solo lectura del tamaño de la bandeja de entrada y la configuración actual de los mecanismos de control. |
 
 ## Recurso
 
 | URI | Descripción |
-|---|---|
-| `interject://inbox` | Array JSON de interjecciones pendientes, las más recientes primero. Los elementos expirados se filtran al leer. |
+| --- | --- |
+| `interject://inbox` | Arreglo JSON de notas pendientes, ordenadas de la más reciente a la más antigua. Los elementos caducados se filtran al leer. |
 
-## Barreras de Protección
+## Mecanismos de control
 
-Todo es configurable vía `aside.configure`. Valores predeterminados:
+Todo es configurable a través de `aside.configure`. Valores predeterminados:
 
-| Configuración | Predeterminado | Qué controla |
-|---|---|---|
-| `defaultTtlSeconds` | 600 (10 min) | Tiempo de vida de una interjección si no se establece expiración explícita |
-| `maxTtlSeconds` | 3600 (1 hora) | Tope máximo de TTL, incluso si el llamador pide más |
-| `dedupeWindowSeconds` | 300 (5 min) | Misma prioridad + texto + razón = suprimido dentro de esta ventana |
-| `rateLimitWindowSeconds` | 60 | Ventana deslizante para límite de tasa |
-| `rateLimitMax` | low: 6, med: 3, high: 1 | Máximo de envíos por prioridad por ventana |
-| `notifyAtOrAbove` | high | Solo enviar notificaciones de log para elementos con esta prioridad o superior |
+| Configuración | Valor predeterminado | ¿Qué controla? |
+| --- | --- | --- |
+| `defaultTtlSeconds` | 600 (10 minutos) | Cuánto tiempo vive una nota si no se establece una fecha de caducidad explícita. |
+| `maxTtlSeconds` | 3600 (1 hora) | Límite máximo de tiempo de vida (TTL), incluso si el solicitante pide más. |
+| `dedupeWindowSeconds` | 300 (5 minutos) | Misma prioridad + texto + razón = suprimida dentro de este intervalo. |
+| `rateLimitWindowSeconds` | 60 | Ventana deslizante para el límite de velocidad. |
+| `rateLimitMax` | bajo: 6, medio: 3, alto: 1 | Máximo número de notas por prioridad por ventana. |
+| `notifyAtOrAbove` | alto | Solo envía notificaciones de registro para elementos con una prioridad igual o superior a esta. |
 
 ## Configuración
 
-### Disparador por Temporizador
+### Temporizador
 
-Un temporizador incorporado se activa cada 5 minutos, enviando un check-in de baja prioridad "¿algún bloqueo?". Respeta las mismas barreras que los envíos manuales (así que será deduplicado o limitado como cualquier otro). Desactívalo comentando la llamada a `startTimerTrigger` en `index.ts`.
+Un temporizador interno se activa cada 5 minutos, enviando una nota de baja prioridad para verificar si hay "algún problema?". Respeta los mismos mecanismos de control que las notas enviadas manualmente (por lo que se eliminarán o limitarán como cualquier otra cosa). Desactívalo comentando la llamada `startTimerTrigger` en `index.ts`.
 
-### Inspector MCP
+### Inspector de MCP
 
 Para pruebas locales:
 
@@ -105,10 +110,14 @@ Args:      build/index.js
 
 ## Notas
 
-- Los logs van a **stderr** — stdout está reservado para MCP JSON-RPC.
-- La bandeja es efímera. Reiniciar = pizarra limpia.
-- Las interjecciones se almacenan de más reciente a más antigua. Los elementos expirados se limpian en cada lectura y envío.
+- Los registros se envían a **stderr**; la salida estándar (stdout) está reservada para el JSON-RPC de MCP.
+- La bandeja de entrada es efímera. Reiniciar = volver a empezar.
+- Las notas se almacenan en orden de la más reciente a la más antigua. Los elementos caducados se eliminan cada vez que se lee o se envía una nota.
 
 ## Licencia
 
 [MIT](LICENSE)
+
+---
+
+Creado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>

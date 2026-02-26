@@ -1,44 +1,49 @@
 <p align="center">
-  <a href="README.md">English</a> | <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <strong>Italiano</strong> | <a href="README.pt-BR.md">Português</a>
+  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.md">English</a> | <a href="README.pt-BR.md">Português (BR)</a>
 </p>
 
 <p align="center">
-  <img src="logo.png" alt="logo mcp-aside" width="280" />
-</p>
-
-<h1 align="center">mcp-aside</h1>
-
-<p align="center">
-  Un server MCP che offre alla tua IA un posto dove annotare pensieri durante la conversazione — senza interrompere il compito in corso.
+  <img src="https://raw.githubusercontent.com/mcp-tool-shop-org/brand/main/logos/mcp-aside/readme.png" alt="mcp-aside logo" width="400" />
 </p>
 
 <p align="center">
-  <a href="#avvio-rapido">Avvio Rapido</a> &middot;
-  <a href="#come-funziona">Come Funziona</a> &middot;
-  <a href="#strumenti">Strumenti</a> &middot;
-  <a href="#configurazione">Configurazione</a> &middot;
-  <a href="#licenza">Licenza</a>
+  <a href="https://github.com/mcp-tool-shop-org/mcp-aside/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/mcp-aside/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://www.npmjs.com/package/@mcptoolshop/mcp-aside"><img src="https://img.shields.io/npm/v/@mcptoolshop/mcp-aside" alt="npm version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
+  <a href="https://mcp-tool-shop-org.github.io/mcp-aside/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page"></a>
+</p>
+
+<p align="center">
+  An MCP server that gives your AI a place to jot things down mid-conversation — without derailing the task at hand.
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick Start</a> &middot;
+  <a href="#how-it-works">How It Works</a> &middot;
+  <a href="#tools">Tools</a> &middot;
+  <a href="#configuration">Configuration</a> &middot;
+  <a href="#license">License</a>
 </p>
 
 ---
 
 ## Perché
 
-Gli LLM perdono il filo. Un pensiero fugace, una preoccupazione a metà, un "dovremmo tornarci" che non viene mai ripreso. **mcp-aside** offre al modello una casella di posta dedicata — con limite di frequenza, deduplicazione e scadenza automatica, così la casella stessa non diventa un problema.
+I modelli linguistici di grandi dimensioni (LLM) tendono a dimenticare le cose. Un pensiero isolato, una preoccupazione non completamente definita, un "dovremmo tornare su questo" che poi non viene più affrontato. **mcp-aside** fornisce al modello una casella di posta dedicata per gestire queste "note a margine", con limiti di frequenza, eliminazione dei duplicati e scadenza automatica, in modo che la casella di posta stessa non diventi un problema.
 
-Pensala come un blocco di post-it accanto alla conversazione. Il modello scrive note. Tu (o il modello) le leggi al momento opportuno.
+Immaginate una graffetta accanto alla conversazione. Il modello scrive delle note. Voi (o il modello) le leggete quando è il momento giusto.
 
 ## Come Funziona
 
-1. Il modello chiama `aside.push` con un pensiero etichettato per priorità.
-2. Le protezioni verificano duplicati, limiti di frequenza e tetti TTL.
-3. Se supera i controlli, l'interjection finisce in una casella in memoria.
+1. Il modello chiama `aside.push` con un pensiero, contrassegnato dalla priorità.
+2. I controlli (guardrails) verificano la presenza di duplicati, i limiti di frequenza e i tempi di scadenza.
+3. Se supera i controlli, l'annotazione viene inserita in una casella di posta in memoria.
 4. I client vengono notificati tramite `notifications/resources/updated`.
-5. Chiunque può leggere la casella attraverso la risorsa `interject://inbox`.
+5. Chiunque può leggere la casella di posta tramite la risorsa `interject://inbox`.
 
-Nessun database. Nessuna persistenza. Se il server si ferma, la casella scompare — per design.
+Non c'è database. Non c'è persistenza. Se il server si arresta, la casella di posta viene persa, ed è una scelta deliberata.
 
-## Avvio Rapido
+## Guida Rapida
 
 ```bash
 npm install
@@ -46,7 +51,7 @@ npm run build
 node build/index.js
 ```
 
-Il server usa MCP su **stdio**. Punta qualsiasi client compatibile MCP verso di esso:
+Il server utilizza MCP tramite **stdio**. Puntate qualsiasi client compatibile con MCP su di esso:
 
 ```json
 {
@@ -62,40 +67,40 @@ Il server usa MCP su **stdio**. Punta qualsiasi client compatibile MCP verso di 
 ## Strumenti
 
 | Strumento | Cosa fa |
-|---|---|
-| `aside.push` | Invia un'interjection nella casella. Accetta `text`, `priority` (low/med/high), `reason`, `tags`, `expiresAt`, `source` e `meta`. |
-| `aside.configure` | Regola le protezioni in tempo reale — tetti TTL, limiti di frequenza, finestre di deduplicazione, soglie di notifica. |
+| --- | --- |
+| `aside.push` | Inserisce un'annotazione nella casella di posta. Accetta `text`, `priority` (bassa/media/alta), `reason`, `tags`, `expiresAt`, `source` e `meta`. |
+| `aside.configure` | Configura i controlli (guardrails) a runtime: limiti di tempo, limiti di frequenza, finestre di deduplicazione, soglie di notifica. |
 | `aside.clear` | Svuota la casella di posta. |
-| `aside.status` | Istantanea in sola lettura della dimensione della casella e della configurazione attuale delle protezioni. |
+| `aside.status` | Snapshot di sola lettura delle dimensioni della casella di posta e della configurazione corrente dei controlli. |
 
 ## Risorsa
 
 | URI | Descrizione |
-|---|---|
-| `interject://inbox` | Array JSON delle interjection in sospeso, le più recenti per prime. Gli elementi scaduti vengono filtrati alla lettura. |
+| --- | --- |
+| `interject://inbox` | Array JSON di annotazioni in attesa, ordinate dalla più recente alla meno recente. Gli elementi scaduti vengono filtrati durante la lettura. |
 
-## Protezioni
+## Controlli (Guardrails)
 
 Tutto è configurabile tramite `aside.configure`. Valori predefiniti:
 
-| Impostazione | Predefinito | Cosa controlla |
-|---|---|---|
-| `defaultTtlSeconds` | 600 (10 min) | Durata di vita di un'interjection senza scadenza esplicita |
-| `maxTtlSeconds` | 3600 (1 ora) | Tetto massimo TTL, anche se il chiamante chiede di più |
-| `dedupeWindowSeconds` | 300 (5 min) | Stessa priorità + testo + motivo = soppresso in questa finestra |
-| `rateLimitWindowSeconds` | 60 | Finestra scorrevole per il limite di frequenza |
-| `rateLimitMax` | low: 6, med: 3, high: 1 | Massimo invii per priorità per finestra |
-| `notifyAtOrAbove` | high | Invia notifiche di log solo per elementi con questa priorità o superiore |
+| Impostazione | Valore predefinito | Cosa controlla |
+| --- | --- | --- |
+| `defaultTtlSeconds` | 600 (10 minuti) | Durata di un'annotazione se non viene impostata una scadenza esplicita. |
+| `maxTtlSeconds` | 3600 (1 ora) | Limite massimo di durata, anche se il chiamante richiede un valore superiore. |
+| `dedupeWindowSeconds` | 300 (5 minuti) | Stessa priorità + testo + motivo = soppressa all'interno di questa finestra. |
+| `rateLimitWindowSeconds` | 60 | Finestra scorrevole per il limite di frequenza. |
+| `rateLimitMax` | bassa: 6, media: 3, alta: 1 | Numero massimo di inserimenti per priorità per finestra. |
+| `notifyAtOrAbove` | alta | Invia notifiche di log solo per elementi con priorità pari o superiore a questa. |
 
 ## Configurazione
 
 ### Timer Trigger
 
-Un timer integrato si attiva ogni 5 minuti, inviando un check-in a bassa priorità "qualche blocco?". Rispetta le stesse protezioni degli invii manuali (quindi verrà deduplicato o limitato come tutto il resto). Disabilitalo commentando la chiamata a `startTimerTrigger` in `index.ts`.
+Un timer integrato si attiva ogni 5 minuti, inviando un controllo di bassa priorità "ci sono blocchi?". Rispetta gli stessi controlli degli inserimenti manuali (quindi verrà deduplicato o limitato di frequenza come qualsiasi altra cosa). Per disabilitarlo, commentare la chiamata `startTimerTrigger` in `index.ts`.
 
-### Inspector MCP
+### MCP Inspector
 
-Per test locali:
+Per i test locali:
 
 ```
 Transport: STDIO
@@ -105,10 +110,14 @@ Args:      build/index.js
 
 ## Note
 
-- I log vanno su **stderr** — stdout è riservato al JSON-RPC MCP.
-- La casella è effimera. Riavvio = tabula rasa.
-- Le interjection sono memorizzate dalla più recente alla più vecchia. Gli elementi scaduti vengono ripuliti ad ogni lettura e invio.
+- I log vengono inviati a **stderr**; **stdout** è riservato per le chiamate JSON-RPC MCP.
+- La casella di posta è volatile. Il riavvio comporta una nuova casella di posta.
+- Le annotazioni sono memorizzate in ordine cronologico inverso (dalla più recente alla meno recente). Gli elementi scaduti vengono eliminati ad ogni lettura e inserimento.
 
 ## Licenza
 
 [MIT](LICENSE)
+
+---
+
+Creato da <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a
