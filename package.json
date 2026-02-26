@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/mcp-aside",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server that maintains an in-memory interjection inbox with guardrails (TTL, rate-limit, dedupe).",
   "type": "module",
   "license": "MIT",
@@ -12,7 +12,16 @@
   "bin": {
     "mcp-aside": "./build/index.js"
   },
-  "files": ["build", "skills", ".claude-plugin", ".mcp.json", "CLAUDE.md", "README.md", "LICENSE", "logo.png"],
+  "files": [
+    "build",
+    "skills",
+    ".claude-plugin",
+    ".mcp.json",
+    "CLAUDE.md",
+    "README.md",
+    "LICENSE",
+    "logo.png"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && node build/index.js"
