@@ -1,6 +1,6 @@
 {
   "name": "@mcptoolshop/mcp-aside",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "MCP server that maintains an in-memory interjection inbox with guardrails (TTL, rate-limit, dedupe).",
   "type": "module",
   "license": "MIT",

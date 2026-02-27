@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
+  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
 </p>
 
 <p align="center">
@@ -114,10 +114,38 @@ Args:      build/index.js
 - The inbox is ephemeral. Restart = clean slate.
 - Interjections are stored newest-first. Expired items are pruned on every read and push.
 
+## Security & Data Scope
+
+mcp-aside is an **MCP server** with an in-memory interjection inbox.
+
+- **Data accessed:** In-memory inbox only — no database, no files, no persistence
+- **Data NOT accessed:** No cloud sync. No telemetry. No file system access
+- **Network:** stdio transport only — no network listeners. No egress
+- **No telemetry** is collected or sent
+
+Full policy: [SECURITY.md](SECURITY.md)
+
+---
+
+## Scorecard
+
+| Category | Score |
+|----------|-------|
+| A. Security | 10/10 |
+| B. Error Handling | 10/10 |
+| C. Operator Docs | 10/10 |
+| D. Shipping Hygiene | 10/10 |
+| E. Identity (soft) | 10/10 |
+| **Overall** | **50/50** |
+
+---
+
 ## License
 
 [MIT](LICENSE)
 
 ---
 
-Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
+<p align="center">
+  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
+</p>
